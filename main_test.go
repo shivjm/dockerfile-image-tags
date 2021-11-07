@@ -11,7 +11,7 @@ func TestParsing(t *testing.T) {
 	expected := []Image{
 		{Name: "golang", Tag: "1.17.0-alpine"},
 		{Name: "common", Tag: " * "},
-		{Name: "common", Tag: " * "},
+		{Name: "common", Tag: "fixme"},
 		{Name: "common", Tag: " * "},
 		{Name: "viaductoss/ksops", Tag: "v3.0.0"},
 		{Name: "quay.io/argoproj/argocd", Tag: "$ARGOCD_VERSION"},
@@ -23,21 +23,28 @@ func TestParsing(t *testing.T) {
 		t.Errorf("Could not open Dockerfile.1: %s", err)
 	}
 
-	tags := getTags(commands, " * ")
+	tags := getImages(commands, " * ")
 
 	assert.Equal(t, expected, tags)
 }
 
 func TestQuery(t *testing.T) {
 	cases := []struct {
-		query string
-		match bool
-		tag   string
+		query      string
+		occurrence int
+		match      bool
+		tag        string
 	}{
-		{query: "foo", match: false, tag: ""},
-		{query: "viaductoss/ksops", match: true, tag: "v3.0.0"},
-		{query: "golang", match: true, tag: "1.17.0-alpine"},
-		{query: "common", match: true, tag: "?"},
+		{query: "foo", occurrence: 0, match: false, tag: ""},
+		{query: "viaductoss/ksops", occurrence: 0, match: true, tag: "v3.0.0"},
+		{query: "golang", occurrence: 0, match: true, tag: "1.17.0-alpine"},
+		{query: "common", occurrence: 0, match: true, tag: "?"},
+		{query: "foo", occurrence: 1, match: false, tag: ""},
+		{query: "viaductoss/ksops", occurrence: 1, match: true, tag: "v3.0.0"},
+		{query: "golang", occurrence: 1, match: true, tag: "1.17.0-alpine"},
+		{query: "common", occurrence: 1, match: true, tag: "?"},
+		{query: "viaductoss/ksops", occurrence: 2, match: false, tag: ""},
+		{query: "common", occurrence: 2, match: true, tag: "fixme"},
 	}
 
 	commands, err := dockerfile.ParseFile("tests/Dockerfile.1")
@@ -46,10 +53,10 @@ func TestQuery(t *testing.T) {
 		t.Errorf("Could not open Dockerfile.1: %s", err)
 	}
 
-	tags := getTags(commands, "?")
+	tags := getImages(commands, "?")
 
 	for _, c := range cases {
-		result, err := getSingleTag(tags, c.query)
+		result, err := getSingleTag(tags, c.query, c.occurrence)
 
 		if c.match {
 			assert.NoError(t, err, "must match %v", c.query)

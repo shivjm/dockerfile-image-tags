@@ -19,6 +19,7 @@ type Image struct {
 func main() {
 	var unknownMarker string
 	var query string
+	var occurrence int
 
 	var rootCmd = &cobra.Command{
 		Use:   "dockerfile-image-tags",
@@ -37,7 +38,7 @@ func main() {
 				log.Fatalf("Could not parse Dockerfile: %s\n", err)
 			}
 
-			images := getTags(parsed, unknownMarker)
+			images := getImages(parsed, unknownMarker)
 
 			val, err := json.Marshal(images)
 
@@ -48,7 +49,7 @@ func main() {
 			if query == "" {
 				fmt.Println(string(val))
 			} else {
-				tag, err := getSingleTag(images, query)
+				tag, err := getSingleTag(images, query, occurrence)
 
 				if err != nil {
 					log.Fatalf("Could not find image in Dockerfile: %s", query)
@@ -59,7 +60,8 @@ func main() {
 		},
 	}
 	rootCmd.Flags().StringVarP(&unknownMarker, "unknown-marker", "m", "?", "string to use to indicate unknown tags")
-	rootCmd.Flags().StringVarP(&query, "query", "q", "", "single image to return tag for (first occurrence)")
+	rootCmd.Flags().StringVarP(&query, "query", "q", "", "single image to return tag for (see `occurrence`)")
+	rootCmd.Flags().IntVarP(&occurrence, "occurrence", "n", 1, "which occurrence of the image to return tag for")
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
@@ -82,8 +84,8 @@ func getInput(args []string) (*os.File, error) {
 	return os.Stdin, nil
 }
 
-// getTags returns the `Image`s used in the given sets of Dockerfile commands.
-func getTags(commands []dockerfile.Command, unknownMarker string) []Image {
+// getImages returns the `Image`s used in the given sets of Dockerfile commands.
+func getImages(commands []dockerfile.Command, unknownMarker string) []Image {
 	images := []Image{}
 
 	for _, cmd := range commands {
@@ -107,10 +109,16 @@ func getTags(commands []dockerfile.Command, unknownMarker string) []Image {
 	return images
 }
 
-func getSingleTag(images []Image, query string) (string, error) {
+func getSingleTag(images []Image, query string, occurrence int) (string, error) {
+	found := 0
+
 	for _, i := range images {
 		if i.Name == query {
-			return i.Tag, nil
+			found += 1
+
+			if found >= occurrence {
+				return i.Tag, nil
+			}
 		}
 	}
 

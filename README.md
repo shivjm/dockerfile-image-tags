@@ -31,11 +31,19 @@ Sample output (JSON):
 
 ### Find single image tag
 
-Pass <kbd>--query</kbd> (<kbd>-q</kbd>) to return tag for first
+Pass <kbd>-q</kbd> (<kbd>--query</kbd>) to return tag for first
 occurrence of image with specified name:
 
 ```sh
 dockerfile-image-tags -q golang path/to/Dockerfile
+```
+
+Pass <kbd>-n</kbd> (<kbd>--occurrence</kbd>) to return specified
+occurrence instead of first occurrence. For example, to return tag for
+second `FROM golang`:
+
+```sh
+dockerfile-image-tags -q golang -n 2 path/to/Dockerfile
 ```
 
 Sample output:

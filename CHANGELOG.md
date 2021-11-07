@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.3.1...v1.3.2) (2021-11-07)
+
+
+### Bug Fixes
+
+* force CI ([8f83fcf](https://www.github.com/shivjm/dockerfile-image-tags/commit/8f83fcff1d242563c52675e2d8a1f3a969254ee3))
+
 ### [1.3.1](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.3.0...v1.3.1) (2021-11-07)
 
 

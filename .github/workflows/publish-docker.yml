@@ -1,0 +1,12 @@
+on:
+  release:
+    types: [published]
+
+name: publish-docker
+
+jobs:
+  docker:
+    uses: "shivjm/dockerfile-image-tags/.github/workflows/docker.yml@1070526d9f21130977ce12eda4905e0bab821a54"
+    with:
+      push: true
+      tags: latest,${{ github.event.release.tag }}

@@ -18,6 +18,8 @@ jobs:
         with:
           release-type: go
           package-name: ${{ env.PACKAGE }}
+          # use a non-default token so creating the release triggers the Docker workflow
+          token: ${{ secrets.GH_TOKEN_TO_CREATE_RELEASE }}
       - uses: actions/checkout@v2
         with:
           depth: 0

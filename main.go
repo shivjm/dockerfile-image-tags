@@ -48,7 +48,7 @@ func main() {
 			if query == "" {
 				fmt.Println(string(val))
 			} else {
-				tag, err := getSingleTag(images, query)
+				tag, err := getSingleTag(images, query, 0)
 
 				if err != nil {
 					log.Fatalf("Could not find image in Dockerfile: %s", query)
@@ -107,10 +107,16 @@ func getImages(commands []dockerfile.Command, unknownMarker string) []Image {
 	return images
 }
 
-func getSingleTag(images []Image, query string) (string, error) {
+func getSingleTag(images []Image, query string, occurrence int) (string, error) {
+	found := 0
+
 	for _, i := range images {
 		if i.Name == query {
-			return i.Tag, nil
+			found += 1
+
+			if found >= occurrence {
+				return i.Tag, nil
+			}
 		}
 	}
 

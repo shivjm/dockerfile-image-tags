@@ -61,5 +61,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd build
-          gh release upload "${{ steps.release.outputs.name }}" ./*
+          gh release upload "${{ steps.release.outputs.tag }}" ./*
         if: ${{ steps.release.outputs.release_created }}

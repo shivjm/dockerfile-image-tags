@@ -3,9 +3,9 @@
 [![version](https://img.shields.io/github/v/release/shivjm/dockerfile-image-tags?include_prereleases&sort=semver)](https://github.com/shivjm/dockerfile-image-tags/releases)
 [![semantic versioning](https://img.shields.io/badge/semantic%20versioning-2.0.0-informational)](https://semver.org/spec/v2.0.0.html)
 
-[![test](https://github.com/shivjm/dockerfile-image-tags/workflows/test/badge.svg)](https://github.com/shivjm/dockerfile-image-tags/actions?query=workflow%3Atest+branch%3Amain)
+[![test](https://github.com/shivjm/dockerfile-image-tags/workflows/test/badge.svg)](https://github.com/shivjm/dockerfile-image-tags/actions?query=workflow%3Atest)
 
-A tool to list images and tags used in a Dockerfile.
+List or query images and tags used in a Dockerfile.
 
 ## Usage
 

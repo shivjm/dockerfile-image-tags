@@ -37,3 +37,8 @@ jobs:
       - name: Run tests
         run: |
           go test
+  docker:
+    uses: "shivjm/dockerfile-image-tags/.github/workflows/docker.yml@1070526d9f21130977ce12eda4905e0bab821a54"
+    with:
+      push: false
+      tags: latest

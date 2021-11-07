@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/asottile/dockerfile"
+	"github.com/spf13/cobra"
 )
 
 const (
@@ -20,33 +21,44 @@ type Image struct {
 }
 
 func main() {
-	file, err := getInput(os.Args)
+	var rootCmd = &cobra.Command{
+		Use:   "dockerfile-image-tags",
+		Short: "List images & tags used in a Dockerfile.",
+		Args:  cobra.MaximumNArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			file, err := getInput(args)
 
-	if err != nil {
-		log.Fatalf("Could not read Dockerfile: %s", err)
+			if err != nil {
+				log.Fatalf("Could not read Dockerfile: %s", err)
+			}
+
+			parsed, err := dockerfile.ParseReader(file)
+
+			if err != nil {
+				log.Fatalf("Could not parse Dockerfile: %s\n", err)
+			}
+
+			images := getTags(parsed, UNKNOWN_MARKER)
+
+			val, err := json.Marshal(images)
+
+			if err != nil {
+				log.Fatalf("Could not serialize images as JSON: %s\n", err)
+			}
+
+			fmt.Println(string(val))
+		},
 	}
 
-	parsed, err := dockerfile.ParseReader(file)
-
-	if err != nil {
-		log.Fatalf("Could not parse Dockerfile: %s\n", err)
+	if err := rootCmd.Execute(); err != nil {
+		log.Fatal(err)
 	}
-
-	images := getTags(parsed, UNKNOWN_MARKER)
-
-	val, err := json.Marshal(images)
-
-	if err != nil {
-		log.Fatalf("Could not serialize images as JSON: %s\n", err)
-	}
-
-	fmt.Println(string(val))
 }
 
 // getInput opens the file named in `args` if present, `os.Stdin` if not.
 func getInput(args []string) (*os.File, error) {
-	if len(args) > 1 {
-		name := args[1]
+	if len(args) == 1 {
+		name := args[0]
 		f, err := os.Open(name)
 
 		if err != nil {

@@ -84,7 +84,7 @@ func getInput(args []string) (*os.File, error) {
 	return os.Stdin, nil
 }
 
-// getImages returns the `Image`s used in the given sets of Dockerfile commands.
+// getImages returns the `Image`s used in the given list of Dockerfile commands.
 func getImages(commands []dockerfile.Command, unknownMarker string) []Image {
 	images := []Image{}
 
@@ -109,6 +109,8 @@ func getImages(commands []dockerfile.Command, unknownMarker string) []Image {
 	return images
 }
 
+// getSingleTag returns the tag for the nth `occurrence` of `query` in
+// the given list of `Image`s.
 func getSingleTag(images []Image, query string, occurrence int) (string, error) {
 	found := 0
 

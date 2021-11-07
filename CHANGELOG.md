@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.0.0...v1.1.0) (2021-11-07)
+
+
+### Features
+
+* allow querying single tag ([47d2db8](https://www.github.com/shivjm/dockerfile-image-tags/commit/47d2db8818b1bf20d91ed62a3d72b6976d042e8a))
+
 ## 1.0.0 (2021-11-07)
 
 

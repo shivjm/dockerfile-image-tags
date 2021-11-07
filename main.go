@@ -50,7 +50,7 @@ func getInput(args []string) (*os.File, error) {
 		f, err := os.Open(name)
 
 		if err != nil {
-			return nil, fmt.Errorf("Could not open %s: %s", name, err)
+			return nil, fmt.Errorf("could not open %s: %s", name, err)
 		}
 
 		return f, nil

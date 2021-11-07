@@ -51,3 +51,8 @@ Sample output:
 ```output
 1.17.0-alpine
 ```
+
+## Docker image
+
+See [shivjm/dockerfile-image-tags
+packages](https://github.com/shivjm/dockerfile-image-tags/pkgs/container/dockerfile-image-tags/).

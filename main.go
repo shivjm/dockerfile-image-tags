@@ -43,6 +43,7 @@ func main() {
 	fmt.Println(string(val))
 }
 
+// getInput opens the file named in `args` if present, `os.Stdin` if not.
 func getInput(args []string) (*os.File, error) {
 	if len(args) > 1 {
 		name := args[1]
@@ -58,6 +59,7 @@ func getInput(args []string) (*os.File, error) {
 	return os.Stdin, nil
 }
 
+// getTags returns the `Image`s used in the given sets of Dockerfile commands.
 func getTags(commands []dockerfile.Command, unknownMarker string) []Image {
 	images := []Image{}
 

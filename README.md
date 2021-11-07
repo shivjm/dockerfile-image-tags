@@ -9,6 +9,8 @@ List or query images and tags used in a Dockerfile.
 
 ## Usage
 
+### List all images and tags
+
 Pass path to Dockerfile:
 
 ```sh
@@ -21,4 +23,23 @@ Or pass Dockerfile as input:
 cat path/to/Dockerfile | dockerfile-image-tags
 ```
 
-The output is a JSON array listing all images and tags found.
+Sample output (JSON):
+
+```json
+[{"name":"golang","tag":"1.17.0-alpine"},{"name":"common","tag":"?"},{"name":"common","tag":"?"},{"name":"common","tag":"?"},{"name":"viaductoss/ksops","tag":"v3.0.0"},{"name":"quay.io/argoproj/argocd","tag":"$ARGOCD_VERSION"}]
+```
+
+### Find single image tag
+
+Pass <kbd>--query</kbd> (<kbd>-q</kbd>) to return tag for first
+occurrence of image with specified name:
+
+```sh
+dockerfile-image-tags -q golang path/to/Dockerfile
+```
+
+Sample output:
+
+```output
+1.17.0-alpine
+```

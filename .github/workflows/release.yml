@@ -51,7 +51,7 @@ jobs:
           for os in ${OS_LIST[@]}; do
             output_path=build/${{ env.PACKAGE }}-amd64-$os
 
-            if [[ $os -eq "windows" ]]; then
+            if [[ $os == "windows" ]]; then
               output_path="$output_path.exe"
             fi
 

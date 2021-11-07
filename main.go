@@ -61,7 +61,7 @@ func main() {
 	}
 	rootCmd.Flags().StringVarP(&unknownMarker, "unknown-marker", "m", "?", "string to use to indicate unknown tags")
 	rootCmd.Flags().StringVarP(&query, "query", "q", "", "single image to return tag for (see `occurrence`)")
-	rootCmd.Flags().IntVarP(&occurrence, "occurrence", "n", 1, "which occurrence of the image to return tag for")
+	rootCmd.Flags().IntVarP(&occurrence, "occurrence", "n", 1, "which occurrence of image to return tag for")
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
@@ -84,7 +84,7 @@ func getInput(args []string) (*os.File, error) {
 	return os.Stdin, nil
 }
 
-// getImages returns the `Image`s used in the given sets of Dockerfile commands.
+// getImages returns the `Image`s used in the given list of Dockerfile commands.
 func getImages(commands []dockerfile.Command, unknownMarker string) []Image {
 	images := []Image{}
 
@@ -109,6 +109,8 @@ func getImages(commands []dockerfile.Command, unknownMarker string) []Image {
 	return images
 }
 
+// getSingleTag returns the tag for the nth `occurrence` of `query` in
+// the given list of `Image`s.
 func getSingleTag(images []Image, query string, occurrence int) (string, error) {
 	found := 0
 

@@ -10,6 +10,10 @@ import (
 	"github.com/asottile/dockerfile"
 )
 
+const (
+	UNKNOWN_MARKER = "?"
+)
+
 type Image struct {
 	Name string `json:"name"`
 	Tag  string `json:"tag"`
@@ -28,7 +32,7 @@ func main() {
 		log.Fatalf("Could not parse Dockerfile: %s\n", err)
 	}
 
-	images := getTags(parsed)
+	images := getTags(parsed, UNKNOWN_MARKER)
 
 	val, err := json.Marshal(images)
 
@@ -54,7 +58,7 @@ func getInput(args []string) (*os.File, error) {
 	return os.Stdin, nil
 }
 
-func getTags(commands []dockerfile.Command) []Image {
+func getTags(commands []dockerfile.Command, unknownMarker string) []Image {
 	images := []Image{}
 
 	for _, cmd := range commands {
@@ -68,7 +72,7 @@ func getTags(commands []dockerfile.Command) []Image {
 			if len(imageParts) > 1 {
 				version = imageParts[1]
 			} else {
-				version = "?"
+				version = unknownMarker
 			}
 
 			images = append(images, Image{Name: image, Tag: version})

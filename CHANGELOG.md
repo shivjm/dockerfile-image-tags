@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.1.0...v1.2.0) (2021-11-07)
+
+
+### Features
+
+* add CLI flag to specify which occurrence to return ([f1fe02c](https://www.github.com/shivjm/dockerfile-image-tags/commit/f1fe02ccc04f2dcf8f1f4ecd92fccd77c1bdd1f0))
+* allow `getSingleTag` to return later occurrences ([c1ecb37](https://www.github.com/shivjm/dockerfile-image-tags/commit/c1ecb379cb64160b506eed5251feb3fe280f8298))
+
 ## [1.1.0](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.0.0...v1.1.0) (2021-11-07)
 
 

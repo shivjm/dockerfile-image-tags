@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.2.0...v1.3.0) (2021-11-07)
+
+
+### Features
+
+* add Dockerfile ([1686dd8](https://www.github.com/shivjm/dockerfile-image-tags/commit/1686dd8b12173dd9ac46a189af8ef3fcd4a38140))
+
 ## [1.2.0](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.1.0...v1.2.0) (2021-11-07)
 
 

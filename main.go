@@ -19,6 +19,7 @@ type Image struct {
 func main() {
 	var unknownMarker string
 	var query string
+	var occurrence int
 
 	var rootCmd = &cobra.Command{
 		Use:   "dockerfile-image-tags",
@@ -48,7 +49,7 @@ func main() {
 			if query == "" {
 				fmt.Println(string(val))
 			} else {
-				tag, err := getSingleTag(images, query, 0)
+				tag, err := getSingleTag(images, query, occurrence)
 
 				if err != nil {
 					log.Fatalf("Could not find image in Dockerfile: %s", query)
@@ -59,7 +60,8 @@ func main() {
 		},
 	}
 	rootCmd.Flags().StringVarP(&unknownMarker, "unknown-marker", "m", "?", "string to use to indicate unknown tags")
-	rootCmd.Flags().StringVarP(&query, "query", "q", "", "single image to return tag for (first occurrence)")
+	rootCmd.Flags().StringVarP(&query, "query", "q", "", "single image to return tag for (see `occurrence`)")
+	rootCmd.Flags().IntVarP(&occurrence, "occurrence", "n", 1, "which occurrence of the image to return tag for")
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)

@@ -11,7 +11,7 @@ func TestParsing(t *testing.T) {
 	expected := []Image{
 		{Name: "golang", Tag: "1.17.0-alpine"},
 		{Name: "common", Tag: " * "},
-		{Name: "common", Tag: " * "},
+		{Name: "common", Tag: "fixme"},
 		{Name: "common", Tag: " * "},
 		{Name: "viaductoss/ksops", Tag: "v3.0.0"},
 		{Name: "quay.io/argoproj/argocd", Tag: "$ARGOCD_VERSION"},
@@ -44,7 +44,7 @@ func TestQuery(t *testing.T) {
 		{query: "golang", occurrence: 1, match: true, tag: "1.17.0-alpine"},
 		{query: "common", occurrence: 1, match: true, tag: "?"},
 		{query: "viaductoss/ksops", occurrence: 2, match: false, tag: ""},
-		{query: "common", occurrence: 3, match: true, tag: "?"},
+		{query: "common", occurrence: 2, match: true, tag: "fixme"},
 	}
 
 	commands, err := dockerfile.ParseFile("tests/Dockerfile.1")

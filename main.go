@@ -18,10 +18,11 @@ type Image struct {
 
 func main() {
 	var unknownMarker string
+	var query string
 
 	var rootCmd = &cobra.Command{
 		Use:   "dockerfile-image-tags",
-		Short: "List images & tags used in a Dockerfile.",
+		Short: "List or query images & tags used in a Dockerfile.",
 		Args:  cobra.MaximumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			file, err := getInput(args)
@@ -44,10 +45,21 @@ func main() {
 				log.Fatalf("Could not serialize images as JSON: %s\n", err)
 			}
 
-			fmt.Println(string(val))
+			if query == "" {
+				fmt.Println(string(val))
+			} else {
+				tag, err := getSingleTag(images, query)
+
+				if err != nil {
+					log.Fatalf("Could not find image in Dockerfile: %s", query)
+				}
+
+				fmt.Println(tag)
+			}
 		},
 	}
 	rootCmd.Flags().StringVarP(&unknownMarker, "unknown-marker", "m", "?", "string to use to indicate unknown tags")
+	rootCmd.Flags().StringVarP(&query, "query", "q", "", "single image to return tag for (first occurrence)")
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
@@ -93,4 +105,14 @@ func getTags(commands []dockerfile.Command, unknownMarker string) []Image {
 	}
 
 	return images
+}
+
+func getSingleTag(images []Image, query string) (string, error) {
+	for _, i := range images {
+		if i.Name == query {
+			return i.Tag, nil
+		}
+	}
+
+	return "", fmt.Errorf("could not find image %s in list", query)
 }

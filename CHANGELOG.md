@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.3.0...v1.3.1) (2021-11-07)
+
+
+### Bug Fixes
+
+* fix typo in command description ([4a1840d](https://www.github.com/shivjm/dockerfile-image-tags/commit/4a1840d59efd8f107431abeb890ec7b55c72c8f7))
+
 ## [1.3.0](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.2.0...v1.3.0) (2021-11-07)
 
 

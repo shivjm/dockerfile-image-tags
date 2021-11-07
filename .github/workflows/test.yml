@@ -1,0 +1,37 @@
+on:
+  push:
+    branches-ignore:
+      - main
+
+env:
+  GO: 1.16.5
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          depth: 0
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO }}
+      - name: go vet
+        run: |
+          go vet
+      - name: staticcheck
+        run: |
+          curl -sfL "https://github.com/dominikh/go-tools/releases/latest/download/staticcheck_linux_amd64.tar.gz" | tar -xvz --strip-components=1
+          ./staticcheck
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          depth: 0
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO }}
+      - name: Run tests
+        run: |
+          go test

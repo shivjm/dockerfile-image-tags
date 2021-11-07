@@ -34,9 +34,21 @@ func main() {
 		log.Fatalf("Could not parse Dockerfile: %s\n", err)
 	}
 
+	images := getTags(parsed)
+
+	val, err := json.Marshal(images)
+
+	if err != nil {
+		log.Fatalf("Could not serialize images as JSON: %s\n", err)
+	}
+
+	fmt.Println(string(val))
+}
+
+func getTags(commands []dockerfile.Command) []Image {
 	images := []Image{}
 
-	for _, cmd := range parsed {
+	for _, cmd := range commands {
 		if cmd.Cmd == "FROM" {
 			full := cmd.Value
 			rawImage := full[0]
@@ -54,7 +66,5 @@ func main() {
 		}
 	}
 
-	val, err := json.Marshal(images)
-
-	fmt.Println(string(val))
+	return images
 }

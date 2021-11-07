@@ -11,16 +11,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const (
-	UNKNOWN_MARKER = "?"
-)
-
 type Image struct {
 	Name string `json:"name"`
 	Tag  string `json:"tag"`
 }
 
 func main() {
+	var unknownMarker string
+
 	var rootCmd = &cobra.Command{
 		Use:   "dockerfile-image-tags",
 		Short: "List images & tags used in a Dockerfile.",
@@ -38,7 +36,7 @@ func main() {
 				log.Fatalf("Could not parse Dockerfile: %s\n", err)
 			}
 
-			images := getTags(parsed, UNKNOWN_MARKER)
+			images := getTags(parsed, unknownMarker)
 
 			val, err := json.Marshal(images)
 
@@ -49,6 +47,7 @@ func main() {
 			fmt.Println(string(val))
 		},
 	}
+	rootCmd.Flags().StringVarP(&unknownMarker, "unknown-marker", "m", "?", "string to use to indicate unknown tags")
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)

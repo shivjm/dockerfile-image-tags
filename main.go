@@ -61,7 +61,7 @@ func main() {
 	}
 	rootCmd.Flags().StringVarP(&unknownMarker, "unknown-marker", "m", "?", "string to use to indicate unknown tags")
 	rootCmd.Flags().StringVarP(&query, "query", "q", "", "single image to return tag for (see `occurrence`)")
-	rootCmd.Flags().IntVarP(&occurrence, "occurrence", "n", 1, "which occurrence of the image to return tag for")
+	rootCmd.Flags().IntVarP(&occurrence, "occurrence", "n", 1, "which occurrence of image to return tag for")
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)

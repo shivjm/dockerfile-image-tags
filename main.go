@@ -16,16 +16,10 @@ type Image struct {
 }
 
 func main() {
-	file := os.Stdin
+	file, err := getInput(os.Args)
 
-	if len(os.Args) > 1 {
-		f, err := os.Open(os.Args[1])
-
-		if err != nil {
-			log.Fatalf("Could not open %s: %s", os.Args[1], err)
-		}
-
-		file = f
+	if err != nil {
+		log.Fatalf("Could not read Dockerfile: %s", err)
 	}
 
 	parsed, err := dockerfile.ParseReader(file)
@@ -43,6 +37,21 @@ func main() {
 	}
 
 	fmt.Println(string(val))
+}
+
+func getInput(args []string) (*os.File, error) {
+	if len(args) > 1 {
+		name := args[1]
+		f, err := os.Open(name)
+
+		if err != nil {
+			return nil, fmt.Errorf("Could not open %s: %s", name, err)
+		}
+
+		return f, nil
+	}
+
+	return os.Stdin, nil
 }
 
 func getTags(commands []dockerfile.Command) []Image {

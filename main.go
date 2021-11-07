@@ -37,7 +37,7 @@ func main() {
 				log.Fatalf("Could not parse Dockerfile: %s\n", err)
 			}
 
-			images := getTags(parsed, unknownMarker)
+			images := getImages(parsed, unknownMarker)
 
 			val, err := json.Marshal(images)
 
@@ -82,8 +82,8 @@ func getInput(args []string) (*os.File, error) {
 	return os.Stdin, nil
 }
 
-// getTags returns the `Image`s used in the given sets of Dockerfile commands.
-func getTags(commands []dockerfile.Command, unknownMarker string) []Image {
+// getImages returns the `Image`s used in the given sets of Dockerfile commands.
+func getImages(commands []dockerfile.Command, unknownMarker string) []Image {
 	images := []Image{}
 
 	for _, cmd := range commands {

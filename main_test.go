@@ -23,7 +23,7 @@ func TestParsing(t *testing.T) {
 		t.Errorf("Could not open Dockerfile.1: %s", err)
 	}
 
-	tags := getTags(commands, " * ")
+	tags := getImages(commands, " * ")
 
 	assert.Equal(t, expected, tags)
 }
@@ -46,7 +46,7 @@ func TestQuery(t *testing.T) {
 		t.Errorf("Could not open Dockerfile.1: %s", err)
 	}
 
-	tags := getTags(commands, "?")
+	tags := getImages(commands, "?")
 
 	for _, c := range cases {
 		result, err := getSingleTag(tags, c.query)

@@ -49,6 +49,7 @@ jobs:
           images: ${{ env.image }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
+      - uses: actions/checkout@v2
       - name: Get revision
         id: revision
         run: |

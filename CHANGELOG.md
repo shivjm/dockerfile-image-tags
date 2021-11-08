@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.0](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.3.2...v2.0.0) (2021-11-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* create separate `list` and `query` sub-commands
+* **input:** allow passing `-` as filename for STDIN
+
+### Features
+
+* create separate `list` and `query` sub-commands ([52e2059](https://www.github.com/shivjm/dockerfile-image-tags/commit/52e205902e93bbf6149971dd7d5bf7d9190dc460))
+* **input:** allow passing `-` as filename for STDIN ([58e6c28](https://www.github.com/shivjm/dockerfile-image-tags/commit/58e6c289b9494bc6f5674518c7a9f59ff9bc7194))
+
 ### [1.3.2](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.3.1...v1.3.2) (2021-11-07)
 
 

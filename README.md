@@ -5,6 +5,8 @@
 
 [![test](https://github.com/shivjm/dockerfile-image-tags/workflows/test/badge.svg)](https://github.com/shivjm/dockerfile-image-tags/actions?query=workflow%3Atest)
 
+<!-- TODO: add a badge once https://github.com/badges/shields/issues/5594 is resolved -->
+
 List or query images and tags used in a Dockerfile.
 
 ## Usage

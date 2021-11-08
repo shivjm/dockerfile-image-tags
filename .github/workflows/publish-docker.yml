@@ -4,11 +4,14 @@ on:
 
 name: publish-docker
 
+env:
+  image: ghcr.io/shivjm/dockerfile-image-tags
+
 jobs:
   docker:
     uses: "shivjm/dockerfile-image-tags/.github/workflows/docker.yml@1070526d9f21130977ce12eda4905e0bab821a54"
     with:
       push: true
       tags: |
-        latest
-        ${{ github.event.release.tag_name }}
+        ${{ env.image}}:latest
+        ${{ env.image }}:${{ github.event.release.tag_name }}

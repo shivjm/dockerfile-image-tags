@@ -1,4 +1,18 @@
 on:
+  workflow_dispatch:
+    inputs:
+      push:
+        description: "Whether to publish images to GHCR"
+        required: true
+        type: boolean
+      tags:
+        description: "List of tags to apply to images (separated by newlines or commas)"
+        required: true
+        type: string
+      version:
+        description: "Version string to compile into program"
+        required: true
+        type: string
   workflow_call:
     inputs:
       push:

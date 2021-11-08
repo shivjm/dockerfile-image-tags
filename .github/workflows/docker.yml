@@ -9,6 +9,10 @@ on:
         description: "List of tags to apply to images (separated by newlines or commas)"
         required: true
         type: string
+      version:
+        description: "Version string to compile into program"
+        required: true
+        type: string
 
 env:
   image: ghcr.io/shivjm/dockerfile-image-tags
@@ -31,10 +35,17 @@ jobs:
           images: ${{ env.image }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
+      - name: Get revision
+        id: revision
+        run: |
+          echo "::set-output name=revision::$(git rev-parse --short HEAD)"
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
+          build-args: |
+            VERSION=${{ inputs.version }}
+            REVISION=${{ steps.revision.outputs.revision }}
           cache-from: type=registry,ref=${{ env.image }}
           cache-to: type=inline
           tags: ${{ inputs.tags }}

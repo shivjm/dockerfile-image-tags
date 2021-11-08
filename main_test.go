@@ -5,10 +5,12 @@ import (
 
 	"github.com/asottile/dockerfile"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/shivjm/dockerfile-image-tags/pkg/images"
 )
 
 func TestParsing(t *testing.T) {
-	expected := []Image{
+	expected := []images.Image{
 		{Name: "golang", Tag: "1.17.0-alpine"},
 		{Name: "common", Tag: " * "},
 		{Name: "common", Tag: "fixme"},
@@ -23,7 +25,7 @@ func TestParsing(t *testing.T) {
 		t.Errorf("Could not open Dockerfile.1: %s", err)
 	}
 
-	tags := getImages(commands, " * ")
+	tags := images.GetImages(commands, " * ")
 
 	assert.Equal(t, expected, tags)
 }
@@ -53,10 +55,10 @@ func TestQuery(t *testing.T) {
 		t.Errorf("Could not open Dockerfile.1: %s", err)
 	}
 
-	tags := getImages(commands, "?")
+	tags := images.GetImages(commands, "?")
 
 	for _, c := range cases {
-		result, err := getSingleTag(tags, c.query, c.occurrence)
+		result, err := images.GetSingleTag(tags, c.query, c.occurrence)
 
 		if c.match {
 			assert.NoError(t, err, "must match %v", c.query)

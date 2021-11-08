@@ -4,17 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
-	"strings"
 
 	"github.com/asottile/dockerfile"
 	"github.com/spf13/cobra"
+
+	"github.com/shivjm/dockerfile-image-tags/pkg/images"
+	"github.com/shivjm/dockerfile-image-tags/pkg/input"
 )
 
-type Image struct {
-	Name string `json:"name"`
-	Tag  string `json:"tag"`
-}
 
 func main() {
 	var unknownMarker string
@@ -26,7 +23,7 @@ func main() {
 		Short: "List or query images & tags used in a Dockerfile.",
 		Args:  cobra.MaximumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			file, err := getInput(args)
+			file, err := input.GetInput(args)
 
 			if err != nil {
 				log.Fatalf("Could not read Dockerfile: %s", err)
@@ -38,9 +35,9 @@ func main() {
 				log.Fatalf("Could not parse Dockerfile: %s\n", err)
 			}
 
-			images := getImages(parsed, unknownMarker)
+			allImages := images.GetImages(parsed, unknownMarker)
 
-			val, err := json.Marshal(images)
+			val, err := json.Marshal(allImages)
 
 			if err != nil {
 				log.Fatalf("Could not serialize images as JSON: %s\n", err)
@@ -49,7 +46,7 @@ func main() {
 			if query == "" {
 				fmt.Println(string(val))
 			} else {
-				tag, err := getSingleTag(images, query, occurrence)
+				tag, err := images.GetSingleTag(allImages, query, occurrence)
 
 				if err != nil {
 					log.Fatalf("Could not find image in Dockerfile: %s", query)
@@ -66,63 +63,4 @@ func main() {
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
 	}
-}
-
-// getInput opens the file named in `args` if present, `os.Stdin` if not.
-func getInput(args []string) (*os.File, error) {
-	if len(args) == 1 {
-		name := args[0]
-		f, err := os.Open(name)
-
-		if err != nil {
-			return nil, fmt.Errorf("could not open %s: %s", name, err)
-		}
-
-		return f, nil
-	}
-
-	return os.Stdin, nil
-}
-
-// getImages returns the `Image`s used in the given list of Dockerfile commands.
-func getImages(commands []dockerfile.Command, unknownMarker string) []Image {
-	images := []Image{}
-
-	for _, cmd := range commands {
-		if cmd.Cmd == "FROM" {
-			full := cmd.Value
-			rawImage := full[0]
-			imageParts := strings.Split(rawImage, ":")
-			image := imageParts[0]
-			var version string
-
-			if len(imageParts) > 1 {
-				version = imageParts[1]
-			} else {
-				version = unknownMarker
-			}
-
-			images = append(images, Image{Name: image, Tag: version})
-		}
-	}
-
-	return images
-}
-
-// getSingleTag returns the tag for the nth `occurrence` of `query` in
-// the given list of `Image`s.
-func getSingleTag(images []Image, query string, occurrence int) (string, error) {
-	found := 0
-
-	for _, i := range images {
-		if i.Name == query {
-			found += 1
-
-			if found >= occurrence {
-				return i.Tag, nil
-			}
-		}
-	}
-
-	return "", fmt.Errorf("could not find image %s in list", query)
 }

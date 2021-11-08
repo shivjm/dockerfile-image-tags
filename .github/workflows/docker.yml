@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
-        if: ${{ inputs.push == true }}
+        if: ${{ (github.event.inputs.push || inputs.push) == true }}
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -58,10 +58,10 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           build-args: |
-            VERSION=${{ inputs.version }}
+            VERSION=${{ github.event.inputs.version || inputs.version }}
             REVISION=${{ steps.revision.outputs.revision }}
           cache-from: type=registry,ref=${{ env.image }}
           cache-to: type=inline
-          tags: ${{ inputs.tags }}
+          tags: ${{ github.event.inputs.tags || inputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          push: ${{ inputs.push == true }}
+          push: ${{ (github.event.inputs.push || inputs.push) == true }}

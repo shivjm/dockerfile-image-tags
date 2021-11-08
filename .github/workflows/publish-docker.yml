@@ -4,14 +4,12 @@ on:
 
 name: publish-docker
 
-env:
-  image: ghcr.io/shivjm/dockerfile-image-tags
-
 jobs:
   docker:
     uses: "shivjm/dockerfile-image-tags/.github/workflows/docker.yml@1070526d9f21130977ce12eda4905e0bab821a54"
     with:
       push: true
+      # can’t use an env variable: https://github.com/actions/runner/issues/480
       tags: |
-        ${{ env.image}}:latest
-        ${{ env.image }}:${{ github.event.release.tag_name }}
+        ghcr.io/shivjm/dockerfile-image-tags:latest
+        ghcr.io/shivjm/dockerfile-image-tags:${{ github.event.release.tag_name }}

@@ -4,11 +4,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const (
+	ProgramName = "dockerfile-image-tags"
+)
+
 var (
 	unknownMarker string
 
 	rootCmd = &cobra.Command{
-		Use:   "dockerfile-image-tags",
+		Use:   ProgramName,
 		Short: "List or query images and tags used in a Dockerfile.",
 	}
 )

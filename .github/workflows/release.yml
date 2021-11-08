@@ -47,6 +47,9 @@ jobs:
           CGO_ENABLED: 0
           GOARCH: amd64
         run: |
+          importpath="github.com/shivjm/$PACKAGE"
+          revision=`git rev-parse --short HEAD`
+
           OS_LIST=("linux" "windows" "darwin")
           for os in ${OS_LIST[@]}; do
             output_path=build/${{ env.PACKAGE }}-amd64-$os
@@ -55,7 +58,7 @@ jobs:
               output_path="$output_path.exe"
             fi
 
-            GOOS=$os go build -tags netgo -o $output_path .
+            GOOS=$os go build -ldflags "-X '$importpath/cmd.Version=${{ steps.release.outputs.tag_name }}' -X '$importpath/cmd.Revision=$revision'" -tags netgo -o $output_path .
           done
         if: ${{ steps.release.outputs.release_created }}
       - name: Upload assets

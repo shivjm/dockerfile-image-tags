@@ -18,7 +18,7 @@ on:
       push:
         description: "Whether to publish images to GHCR"
         required: true
-        type: boolean
+        type: string
       tags:
         description: "List of tags to apply to images (separated by newlines or commas)"
         required: true
@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
-        if: ${{ (github.event.inputs.push || inputs.push) == true }}
+        if: ${{ (github.event.inputs.push == "true") || (inputs.push == true) }}
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -65,4 +65,4 @@ jobs:
           cache-to: type=inline
           tags: ${{ github.event.inputs.tags || inputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          push: ${{ (github.event.inputs.push || inputs.push) == true }}
+          push: ${{ (github.event.inputs.push == "true") || (inputs.push == true) }}

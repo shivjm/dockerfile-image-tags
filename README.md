@@ -14,13 +14,13 @@ List or query images and tags used in a Dockerfile.
 Pass path to Dockerfile:
 
 ```sh
-dockerfile-image-tags path/to/Dockerfile
+dockerfile-image-tags list path/to/Dockerfile
 ```
 
 Or pass Dockerfile as input:
 
 ```sh
-cat path/to/Dockerfile | dockerfile-image-tags
+cat path/to/Dockerfile | dockerfile-image-tags list
 ```
 
 Sample output (JSON):
@@ -31,11 +31,11 @@ Sample output (JSON):
 
 ### Find single image tag
 
-Pass <kbd>-q</kbd> (<kbd>--query</kbd>) to return tag for first
-occurrence of image with specified name:
+Use <kbd>query</kbd> to return tag for first occurrence of image with specified
+name:
 
 ```sh
-dockerfile-image-tags -q golang path/to/Dockerfile
+dockerfile-image-tags query path/to/Dockerfile golang
 ```
 
 Pass <kbd>-n</kbd> (<kbd>--occurrence</kbd>) to return specified
@@ -43,7 +43,7 @@ occurrence instead of first occurrence. For example, to return tag for
 second `FROM golang`:
 
 ```sh
-dockerfile-image-tags -q golang -n 2 path/to/Dockerfile
+dockerfile-image-tags query -n 2 path/to/Dockerfile golang
 ```
 
 Sample output:

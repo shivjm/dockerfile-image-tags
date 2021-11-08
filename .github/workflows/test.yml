@@ -24,7 +24,7 @@ jobs:
       - name: staticcheck
         run: |
           curl -sfL "https://github.com/dominikh/go-tools/releases/latest/download/staticcheck_linux_amd64.tar.gz" | tar -xvz --strip-components=1
-          ./staticcheck
+          ./staticcheck ./...
   test:
     runs-on: ubuntu-latest
     steps:
@@ -36,7 +36,7 @@ jobs:
           go-version: ${{ env.GO }}
       - name: Run tests
         run: |
-          go test
+          go test -v ./...
   docker:
     uses: "shivjm/dockerfile-image-tags/.github/workflows/docker.yml@1070526d9f21130977ce12eda4905e0bab821a54"
     with:

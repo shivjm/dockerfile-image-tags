@@ -4,6 +4,10 @@ WORKDIR /app
 
 COPY go.mod go.sum main.go ./
 
+COPY pkg ./pkg
+
+COPY cmd ./cmd
+
 RUN CGO_ENABLED=0 GOOS=linux go build -tags netgo -ldflags '-w' .
 
 FROM scratch

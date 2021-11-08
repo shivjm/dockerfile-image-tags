@@ -1,10 +1,14 @@
-package main
+package images
 
 import (
 	"testing"
 
 	"github.com/asottile/dockerfile"
 	"github.com/stretchr/testify/assert"
+)
+
+const (
+	Dockerfile = "../../tests/Dockerfile.1"
 )
 
 func TestParsing(t *testing.T) {
@@ -17,13 +21,13 @@ func TestParsing(t *testing.T) {
 		{Name: "quay.io/argoproj/argocd", Tag: "$ARGOCD_VERSION"},
 	}
 
-	commands, err := dockerfile.ParseFile("tests/Dockerfile.1")
+	commands, err := dockerfile.ParseFile(Dockerfile)
 
 	if err != nil {
-		t.Errorf("Could not open Dockerfile.1: %s", err)
+		t.Errorf("Could not open %s: %s", Dockerfile, err)
 	}
 
-	tags := getImages(commands, " * ")
+	tags := GetImages(commands, " * ")
 
 	assert.Equal(t, expected, tags)
 }
@@ -47,16 +51,16 @@ func TestQuery(t *testing.T) {
 		{query: "common", occurrence: 2, match: true, tag: "fixme"},
 	}
 
-	commands, err := dockerfile.ParseFile("tests/Dockerfile.1")
+	commands, err := dockerfile.ParseFile(Dockerfile)
 
 	if err != nil {
-		t.Errorf("Could not open Dockerfile.1: %s", err)
+		t.Errorf("Could not open %s: %s", Dockerfile, err)
 	}
 
-	tags := getImages(commands, "?")
+	tags := GetImages(commands, "?")
 
 	for _, c := range cases {
-		result, err := getSingleTag(tags, c.query, c.occurrence)
+		result, err := GetSingleTag(tags, c.query, c.occurrence)
 
 		if c.match {
 			assert.NoError(t, err, "must match %v", c.query)

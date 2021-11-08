@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://www.github.com/shivjm/dockerfile-image-tags/compare/v2.0.0...v2.1.0) (2021-11-08)
+
+
+### Features
+
+* add version command ([5b0f84b](https://www.github.com/shivjm/dockerfile-image-tags/commit/5b0f84bf08c39f64868729ba914b2a0315ad5a9c))
+
 ## [2.0.0](https://www.github.com/shivjm/dockerfile-image-tags/compare/v1.3.2...v2.0.0) (2021-11-08)
 
 
